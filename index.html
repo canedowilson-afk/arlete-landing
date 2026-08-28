@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>100 Dias Sem Açúcar na Agenda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --verde-escuro: #2f4a3c;
+    --verde-claro: #e8f0e4;
+    --dourado: #c9a24b;
+    --laranja: #e0662a;
+    --laranja-escuro: #c14f1c;
+    --texto: #2b2b2b;
+    --branco: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--texto);
+    background: var(--branco);
+    line-height: 1.6;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  header.hero {
+    background: linear-gradient(135deg, var(--verde-escuro), #4a6b56);
+    color: var(--branco);
+    padding: 56px 0 48px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--dourado);
+    color: #2b2b2b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  header.hero h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    margin: 0 0 16px;
+    line-height: 1.25;
+  }
+  header.hero p.subtitle {
+    font-size: clamp(16px, 2.2vw, 20px);
+    max-width: 640px;
+    margin: 0 auto 32px;
+    opacity: 0.95;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--laranja);
+    color: var(--branco);
+    font-weight: bold;
+    padding: 18px 42px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 19px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 4px 14px rgba(224,102,42,0.4);
+  }
+  .cta-btn:hover { background: var(--laranja-escuro); }
+  .cta-sub {
+    display: block;
+    margin-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+  section { padding: 52px 0; }
+  section.alt { background: var(--verde-claro); }
+  h2 {
+    font-size: clamp(22px, 3vw, 30px);
+    color: var(--verde-escuro);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .dores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .dor-card {
+    background: var(--branco);
+    border-left: 4px solid var(--dourado);
+    padding: 18px 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+  }
+  .dor-card strong { color: var(--verde-escuro); display: block; margin-bottom: 4px; font-size: 15.5px; }
+  .modulos { display: grid; gap: 18px; }
+  .modulo {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--branco); padding: 20px; border-radius: 8px; border: 1px solid #e2e2e2;
+  }
+  .modulo .numero {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--verde-escuro); color: var(--branco);
+    display: flex; align-items: center; justify-content: center;
+    font-family: Arial, sans-serif; font-weight: bold;
+  }
+  .modulo h3 { margin: 0 0 6px; font-size: 18px; color: var(--verde-escuro); }
+  .modulo p { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
+  blockquote {
+    font-style: italic; border-left: 3px solid var(--dourado);
+    padding-left: 20px; margin: 24px 0; color: #444;
+  }
+  .autora { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .autora .foto-placeholder {
+    width: 140px; height: 140px; border-radius: 50%;
+    background: #d8e2d3; border: 2px dashed #9fb397;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; font-family: Arial, sans-serif; font-size: 12px;
+    color: #5a705f; flex-shrink: 0; padding: 8px;
+  }
+  .autora .texto { flex: 1; min-width: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
+  .autoridade-lista { list-style: none; margin: 16px 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
+  .autoridade-lista li { padding: 6px 0 6px 26px; position: relative; }
+  .autoridade-lista li::before { content: "✓"; position: absolute; left: 0; color: var(--laranja); font-weight: bold; }
+  .assinatura-placeholder {
+    margin-top: 16px; font-family: 'Brush Script MT', cursive; font-size: 22px;
+    color: var(--verde-escuro); border-top: 1px dashed #b7c6b0; padding-top: 10px; display: inline-block;
+  }
+  .prova-real {
+    background: var(--branco); border: 1px solid #e2e2e2; border-radius: 8px;
+    padding: 22px; margin-bottom: 18px; font-family: Arial, Helvetica, sans-serif; font-size: 15px;
+  }
+  .prova-real .numero-destaque { font-size: 26px; font-weight: bold; color: var(--laranja); font-family: Arial, sans-serif; }
+  .depoimento-placeholder {
+    background: #fbfbfb; border: 2px dashed #ccc; border-radius: 8px;
+    padding: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #888;
+    text-align: center;
+  }
+  .acesso-imediato {
+    text-align: center; font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px; font-weight: bold; color: var(--verde-escuro);
+    margin: 32px 0 0;
+  }
+  .disclaimer {
+    background: #fff8ec; border: 1px solid var(--dourado); border-radius: 6px;
+    padding: 20px 24px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #4a4a4a;
+  }
+  .oferta-footer {
+    background: var(--verde-escuro); color: var(--branco);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .oferta-footer h2 { color: var(--branco); }
+  .oferta-detalhes { font-size: 14.5px; }
+  .oferta-detalhes ul { padding-left: 20px; }
+  .oferta-cta { text-align: center; margin-top: 24px; }
+  .garantia-selo {
+    display: inline-block; border: 2px solid var(--dourado); border-radius: 999px;
+    padding: 8px 20px; font-size: 14px; font-weight: bold; margin: 16px 0; color: var(--dourado);
+  }
+  footer.creditos {
+    text-align: center; padding: 28px 0; font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px; color: #cfd9cf; background: var(--verde-escuro);
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .final-cta { text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <span class="badge">MAIS DE 30 ANOS VIVENDO E TESTANDO NA PRÁTICA</span>
+    <h1>Controlar o Diabetes Tipo 2 Não Precisa Reorganizar sua Agenda Inteira</h1>
+    <p class="subtitle">O método de Arlete Canedo — mais de três décadas convivendo com diabetes tipo 2 — para o profissional liberal estabilizar a glicemia em 100 dias, sem dieta radical e sem abrir mão do trabalho.</p>
+    <a class="cta-btn" href="#oferta">Quero o Método Completo de Arlete</a>
+    <span class="cta-sub">Acesso imediato após a confirmação da inscrição</span>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>Se você se reconhece em algum destes pontos...</h2>
+    <div class="dores">
+      <div class="dor-card"><strong>Agenda sem espaço</strong>Consultas, audiências ou atendimentos não deixam tempo para cozinhar todos os dias.</div>
+      <div class="dor-card"><strong>Dietas que não sobrevivem à rotina</strong>Já tentou plano alimentar pronto, mas ele não resiste à primeira semana corrida.</div>
+      <div class="dor-card"><strong>Fora de casa = fora de controle</strong>Come em restaurante, delivery ou correndo — e é exatamente aí que a glicemia foge do controle.</div>
+      <div class="dor-card"><strong>Estresse que vira glicemia alta</strong>Sente que a pressão da profissão "descarrega" direto na taxa de açúcar no sangue.</div>
+      <div class="dor-card"><strong>Cansaço de lista de proibições</strong>Quer um sistema simples de decisão, não mais uma tabela para decorar.</div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>Quem está compartilhando esse método</h2>
+    <div class="autora">
+      <div class="foto-placeholder">[ espaço para foto de Arlete ]</div>
+      <div class="texto">
+        <ul class="autoridade-lista">
+          <li>Mais de 30 anos vivendo com diabetes tipo 2 — não é teoria, é prática diária</li>
+          <li>Chef de Cozinha formada pelo Centro Europeu de Curitiba</li>
+          <li>Método testado e ajustado ao longo de três décadas de tentativa, erro e resultado real</li>
+          <li>Já orientou familiares próximos a normalizar a glicemia usando o mesmo sistema</li>
+        </ul>
+        <blockquote>"Não sou médica nem nutricionista. Sou uma diabética que decidiu não desistir — e que aprendeu, na prática, o que funciona quando a vida não para."</blockquote>
+        <span class="assinatura-placeholder">Arlete Canedo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Resultado real de quem já aplicou os mesmos princípios</h2>
+    <div class="prova-real">
+      <span class="numero-destaque">de 230–300 para 106</span><br>
+      Glicemia de jejum de um familiar de Arlete, em <strong>2 meses</strong>, seguindo os mesmos princípios do método — durante um período de forte estresse (internação de um parente próximo).
+    </div>
+    <div class="depoimento-placeholder">
+      [Depoimentos de clientes virão após o lançamento]
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="oferta">
+  <div class="container">
+    <h2>O que você recebe no "100 Dias Sem Açúcar na Agenda"</h2>
+    <div class="modulos">
+      <div class="modulo">
+        <div class="numero">1</div>
+        <div><h3>O Sistema das 4 Categorias</h3>
+        <p>Um jeito simples de classificar qualquer alimento e decidir em segundos — no mercado, no restaurante ou na mesa de reunião.</p></div>
+      </div>
+      <div class="modulo">
+        <div class="numero">2</div>
+        <div><h3>Kit de Preparo em Lote</h3>
+        <p>Cronograma de "domingo de marmitas", lista de compras pronta e receitas organizadas por tempo de preparo.</p></div>
+      </div>
+      <div class="modulo">
+        <div class="numero">3</div>
+        <div><h3>Cartão de Decisão Rápida</h3>
+        <p>Versão resumida e visual do método, para salvar no celular e consultar em qualquer situação imprevista.</p></div>
+      </div>
+      <div class="modulo">
+        <div class="numero">4</div>
+        <div><h3>Ferramenta de Autoanálise de 5 Minutos</h3>
+        <p>Checklist rápido para identificar o estresse que dispara as recaídas.</p></div>
+      </div>
+      <div class="modulo">
+        <div class="numero">5</div>
+        <div><h3>Registro de Acompanhamento de 100 Dias</h3>
+        <p>Planilha simples para peso, medidas, glicemia e pressão, com marcos nos dias 1, 30, 60 e 100.</p></div>
+      </div>
+    </div>
+
+    <p class="acesso-imediato">Acesso imediato após pagamento — para sempre.</p>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <h2>Pronto para ter um sistema, não mais uma dieta?</h2>
+    <a class="cta-btn" href="https://pay.kiwify.com.br/7F29hr3">Começar Minha Transformação Agora</a>
+  </div>
+</section>
+
+<section class="oferta-footer">
+  <div class="container">
+    <h2>Método Completo de Arlete</h2>
+    <div class="oferta-detalhes">
+      <p><strong>Inclui:</strong></p>
+      <ul>
+        <li>Vídeos do Sistema das 4 Categorias e do método do prato</li>
+        <li>Receitário completo (salgados, doces adaptados e bebidas)</li>
+        <li>Planilha/caderno de acompanhamento de 100 dias</li>
+        <li>Cartão de decisão rápida em PDF e imagem para celular</li>
+      </ul>
+      <span class="garantia-selo">Garantia de 30 dias — ou seu dinheiro de volta</span>
+    </div>
+    <div class="oferta-cta">
+      <a class="cta-btn" href="https://pay.kiwify.com.br/7F29hr3">Quero o Método Completo de Arlete — R$ 47,00</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="disclaimer">
+      <strong>Aviso importante:</strong> este material é uma troca de experiência pessoal e não substitui orientação médica ou nutricional. Nunca interrompa ou altere sua medicação sem autorização do seu médico. Os resultados descritos são relatos individuais e podem variar de pessoa para pessoa.
+    </div>
+  </div>
+</section>
+
+<footer class="creditos">
+  <div class="container">
+    Método Arlete Canedo • Mais de 30 anos de experiência prática<br>
+    &copy; Arlete Canedo Gomes. Todos os direitos reservados.
+  </div>
+</footer>
+
+</body>
+</html>
