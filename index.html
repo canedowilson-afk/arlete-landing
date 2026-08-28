@@ -113,12 +113,12 @@
     padding-left: 20px; margin: 24px 0; color: #444;
   }
   .autora { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-  .autora .foto-placeholder {
+  .autora .foto-arlete {
     width: 140px; height: 140px; border-radius: 50%;
-    background: #d8e2d3; border: 2px dashed #9fb397;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; font-family: Arial, sans-serif; font-size: 12px;
-    color: #5a705f; flex-shrink: 0; padding: 8px;
+    object-fit: cover; object-position: center 20%;
+    border: 3px solid var(--branco);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    flex-shrink: 0; display: block;
   }
   .autora .texto { flex: 1; min-width: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
   .autoridade-lista { list-style: none; margin: 16px 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
@@ -196,7 +196,7 @@
   <div class="container">
     <h2>Quem está compartilhando esse método</h2>
     <div class="autora">
-      <div class="foto-placeholder">[ espaço para foto de Arlete ]</div>
+      <img class="foto-arlete" src="foto-arlete.png" alt="Arlete Canedo Gomes, autora do método" width="140" height="140">
       <div class="texto">
         <ul class="autoridade-lista">
           <li>Mais de 30 anos vivendo com diabetes tipo 2 — não é teoria, é prática diária</li>
