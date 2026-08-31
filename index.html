@@ -165,6 +165,40 @@
     border-top: 1px solid rgba(255,255,255,0.15);
   }
   .final-cta { text-align: center; }
+  .captura-whatsapp {
+    background: var(--branco);
+  }
+  .captura-card {
+    max-width: 480px; margin: 0 auto; background: var(--verde-claro);
+    border: 1px solid #d3e0cd; border-radius: 10px; padding: 28px 24px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .captura-card h3 {
+    margin: 0 0 6px; color: var(--verde-escuro); font-size: 19px; text-align: center;
+  }
+  .captura-card .captura-sub {
+    text-align: center; font-size: 14px; color: #555; margin: 0 0 20px;
+  }
+  .campo-grupo { margin-bottom: 14px; }
+  .campo-grupo label { display: block; font-size: 13.5px; font-weight: bold; color: var(--texto); margin-bottom: 5px; }
+  .campo-grupo input[type="text"],
+  .campo-grupo input[type="tel"] {
+    width: 100%; padding: 12px 14px; border: 1px solid #c7c7c7; border-radius: 6px;
+    font-size: 15px; font-family: Arial, Helvetica, sans-serif; box-sizing: border-box;
+  }
+  .campo-checkbox { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 18px; }
+  .campo-checkbox input { margin-top: 3px; flex-shrink: 0; }
+  .campo-checkbox label { font-size: 13px; color: #444; line-height: 1.45; }
+  .btn-captura {
+    display: block; width: 100%; background: var(--laranja); color: var(--branco);
+    font-weight: bold; font-size: 16px; padding: 14px; border: none; border-radius: 6px;
+    cursor: pointer; font-family: Arial, Helvetica, sans-serif;
+  }
+  .btn-captura:hover { background: var(--laranja-escuro); }
+  .btn-captura:disabled { opacity: 0.6; cursor: not-allowed; }
+  .captura-msg { margin-top: 14px; text-align: center; font-size: 14px; font-weight: bold; }
+  .captura-msg.sucesso { color: var(--verde-escuro); }
+  .captura-msg.erro { color: #b33b1e; }
 </style>
 </head>
 <body>
@@ -217,6 +251,31 @@
     <div class="prova-real">
       <span class="numero-destaque">de 230–300 para 106</span><br>
       Glicemia de jejum de um familiar de Arlete, em <strong>2 meses</strong>, seguindo os mesmos princípios do método — durante um período de forte estresse (internação de um parente próximo).
+    </div>
+  </div>
+</section>
+
+<section id="captura-whatsapp" class="captura-whatsapp">
+  <div class="container">
+    <div class="captura-card">
+      <h3>Quer receber novidades e condições especiais no WhatsApp?</h3>
+      <p class="captura-sub">Deixe seu contato — é opcional, você pode comprar o ebook direto abaixo sem preencher nada.</p>
+      <form id="form-captura">
+        <div class="campo-grupo">
+          <label for="captura-nome">Seu nome completo</label>
+          <input type="text" id="captura-nome" name="nome" placeholder="Seu nome completo" required minlength="2" maxlength="150">
+        </div>
+        <div class="campo-grupo">
+          <label for="captura-whatsapp-input">Seu WhatsApp (com DDD)</label>
+          <input type="tel" id="captura-whatsapp-input" name="whatsapp" placeholder="11 999999999" pattern="[0-9()\-\s]{10,15}" required>
+        </div>
+        <div class="campo-checkbox">
+          <input type="checkbox" id="captura-consentimento" name="consentimento" required>
+          <label for="captura-consentimento">Concordo em receber mensagens de Arlete Canedo no WhatsApp sobre o ebook e novidades relacionadas. Posso pedir para parar quando quiser.</label>
+        </div>
+        <button type="submit" class="btn-captura">Enviar meu contato</button>
+        <div id="captura-mensagem" class="captura-msg" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </div>
 </section>
@@ -297,5 +356,62 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  // ⚠️ IMPORTANTE: troque pelo URL REAL do backend do LeadHunter em produção.
+  // Em desenvolvimento local aponta pro servidor rodando em localhost:3001 —
+  // isso NÃO funciona para visitantes reais da landing publicada no GitHub
+  // Pages, só funciona testando com o backend rodando na sua própria máquina.
+  var LANDING_API_URL = 'http://localhost:3001/api/capture/landing';
+  var CHECKOUT_FALLBACK_URL = 'https://pay.kiwify.com.br/7F29hr3';
+
+  var form = document.getElementById('form-captura');
+  var msgEl = document.getElementById('captura-mensagem');
+  var btn = form.querySelector('.btn-captura');
+
+  function mostrarMensagem(texto, tipo) {
+    msgEl.textContent = texto;
+    msgEl.className = 'captura-msg ' + tipo;
+  }
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    mostrarMensagem('', '');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    var nome = document.getElementById('captura-nome').value.trim();
+    var whatsapp = document.getElementById('captura-whatsapp-input').value.trim();
+    var consentimento = document.getElementById('captura-consentimento').checked;
+
+    fetch(LANDING_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: nome, whatsapp: whatsapp, opt_in_checkbox: consentimento })
+    })
+      .then(function (res) {
+        return res.json().then(function (json) { return { ok: res.ok, json: json }; });
+      })
+      .then(function (result) {
+        if (result.ok && result.json.success) {
+          mostrarMensagem('✅ Contato recebido! Redirecionando para o checkout...', 'sucesso');
+          form.reset();
+          var destino = result.json.redirectUrl || CHECKOUT_FALLBACK_URL;
+          setTimeout(function () { window.location.href = destino; }, 1500);
+        } else {
+          var erro = (result.json.error && result.json.error.message) || 'Não foi possível enviar seu contato.';
+          mostrarMensagem('❌ Erro: ' + erro, 'erro');
+          btn.disabled = false;
+          btn.textContent = 'Enviar meu contato';
+        }
+      })
+      .catch(function () {
+        mostrarMensagem('❌ Erro: não conseguimos conectar ao servidor agora. Tente novamente em instantes.', 'erro');
+        btn.disabled = false;
+        btn.textContent = 'Enviar meu contato';
+      });
+  });
+})();
+</script>
 </body>
 </html>
