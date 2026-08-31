@@ -394,10 +394,8 @@
       })
       .then(function (result) {
         if (result.ok && result.json.success) {
-          mostrarMensagem('✅ Contato recebido! Redirecionando para o checkout...', 'sucesso');
+          mostrarMensagem('✅ Obrigado! Arlete vai chamar em breve no WhatsApp!', 'sucesso');
           form.reset();
-          var destino = result.json.redirectUrl || CHECKOUT_FALLBACK_URL;
-          setTimeout(function () { window.location.href = destino; }, 1500);
         } else {
           var erro = (result.json.error && result.json.error.message) || 'Não foi possível enviar seu contato.';
           mostrarMensagem('❌ Erro: ' + erro, 'erro');
